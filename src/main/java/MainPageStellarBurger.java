@@ -12,9 +12,6 @@ import static com.codeborne.selenide.Selenide.page;
 public class MainPageStellarBurger extends HeaderElements {
 
     public static final String MAIN_PAGE_URL = "https://stellarburgers.nomoreparties.site";
-    public void startUp () {
-        Configuration.startMaximized = true;
-    }
 
     // кнопка Войти в аккаунт
     @FindBy(how = How.XPATH, using = ".//button[text()='Войти в аккаунт']")
