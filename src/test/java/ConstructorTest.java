@@ -4,6 +4,7 @@ import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import pageObjects.MainPageStellarBurger;
 
 import static com.codeborne.selenide.Selenide.open;
 

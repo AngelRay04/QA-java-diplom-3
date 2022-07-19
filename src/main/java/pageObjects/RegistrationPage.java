@@ -1,4 +1,5 @@
-import com.codeborne.selenide.ElementsCollection;
+package pageObjects;
+
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.support.FindBy;
@@ -7,10 +8,12 @@ import org.openqa.selenium.support.How;
 import static com.codeborne.selenide.Selenide.page;
 
 public class RegistrationPage extends HeaderElements {
-
-    // поля Имя и email
-    @FindBy(how = How.XPATH, using = ".//input[@name='name']")
-    private ElementsCollection nameAndEmailFields;
+    // поле Имя
+    @FindBy(how = How.XPATH, using = "//fieldset[1]//input")
+    private SelenideElement nameField;
+    // поле email
+    @FindBy(how = How.XPATH, using = "//fieldset[2]//input")
+    private SelenideElement emailField;
     // поле Пароль
     @FindBy(how = How.XPATH, using = ".//input[@name='Пароль']")
     private SelenideElement passwordField;
@@ -37,8 +40,8 @@ public class RegistrationPage extends HeaderElements {
 
     @Step("Регистрация пользователя")
     public void registration(String name, String email, String password) {
-        nameAndEmailFields.get(0).setValue(name);
-        nameAndEmailFields.get(1).setValue(email);
+        nameField.setValue(name);
+        emailField.setValue(email);
         passwordField.setValue(password);
         registrationButton.click();
     }

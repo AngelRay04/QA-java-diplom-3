@@ -1,27 +1,32 @@
+import clients.UserClient;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.junit4.DisplayName;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
+import models.User;
+import org.junit.*;
+import pageObjects.MainPageStellarBurger;
 
 import static com.codeborne.selenide.Selenide.open;
 
 public class LoginTest {
-
     MainPageStellarBurger mainPage = open(MainPageStellarBurger.MAIN_PAGE_URL, MainPageStellarBurger.class);
-    String email = "psraisaih@yandex.ru";
-    String password = "qwerty";
+    User user;
+    UserClient userClient;
+    String accessToken;
 
     @Before
     public void setUp() {
         Configuration.startMaximized = true;
+        userClient = new UserClient();
+        user = User.getRandom();
+        accessToken = userClient.createUser(user);
     }
 
     @After
     public void tearDown() {
+        if (accessToken != null) {
+            userClient.deleteUser(accessToken);
+        }
         Selenide.closeWebDriver();
     }
 
@@ -29,7 +34,7 @@ public class LoginTest {
     @Test
     public void successLoginWithButtonInHeader() {
         Assert.assertTrue("Авторизация через кнопку в хедере не выполнена", mainPage.clickAccountButtonInHeader()
-                .authorization(email, password)
+                .authorization(user.getEmail(), user.getPassword())
                 .isMakeOrderButtonVisible());
     }
 
@@ -37,7 +42,7 @@ public class LoginTest {
     @Test
     public void successLoginWithAccountButtonOnMainPage() {
         Assert.assertTrue("Авторизация через кнопку на главной не выполнена", mainPage.clickAccountButton()
-                .authorization(email, password)
+                .authorization(user.getEmail(), user.getPassword())
                 .isMakeOrderButtonVisible());
     }
 
@@ -47,7 +52,7 @@ public class LoginTest {
         Assert.assertTrue("Авторизация через страницу регистрации не выполнена", mainPage.clickAccountButtonInHeader()
                 .clickRegistrationLink()
                 .clickLoginLink()
-                .authorization(email, password)
+                .authorization(user.getEmail(), user.getPassword())
                 .isMakeOrderButtonVisible());
     }
 
@@ -57,7 +62,7 @@ public class LoginTest {
         Assert.assertTrue("Авторизация через страницу восстановления пароля не выполнена", mainPage.clickAccountButtonInHeader()
                 .clickPasswordRecoveryLink()
                 .clickEnterButtonOnRecoveryPage()
-                .authorization(email, password)
+                .authorization(user.getEmail(), user.getPassword())
                 .isMakeOrderButtonVisible());
     }
 
